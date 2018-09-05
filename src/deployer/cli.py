@@ -3,10 +3,11 @@ import os
 import pickle
 import sys
 import time
-
+import glob
 # import matplotlib
 # import matplotlib.pyplot as plt
 # matplotlib.matplotlib_fname()
+from os.path import dirname as up
 
 w_dir = os.path.dirname(os.getcwd())
 sys.path.append(w_dir)
@@ -134,6 +135,8 @@ def select_float_values(print_msg, prompt_msg, error_msg):
 
     return float_values
 
+def select_data(input):
+    prompt("do you want to se")
 
 def select_eval_metrics():
     print('Please select the evaluation metrics you want to use:')
@@ -306,17 +309,43 @@ def select_hpo_params(model_id):
 
     return hpo_params
 
+def show_available_data_folder():
+    pathx = up(up(os.getcwd()))
+    pathx = pathx + "/corpora/"
+    print("Your available training file is at the following directory: ")
+    for file in os.listdir(pathx):
+        print(file)
+
+def show_path_msg(print_msg):
+    pathx= up(up(os.getcwd()))
+    pathx = pathx + "/corpora/wn18"
+    if(print_msg==TRAINING_SET_PRINT_MSG):
+        #print(pathx)
+        for file in os.listdir(pathx):
+            if file.endswith("_train.tsv"):
+                print("Your available training file is at the following directory: ")
+                print(os.path.join(pathx, file))
+
+    elif(print_msg==VALIDATION_SET_PRINT_MSG):
+        for file in os.listdir(pathx):
+            if file.endswith("_validation.tsv"):
+                print("Your available validation file is at the following directory: ")
+                print(os.path.join(pathx, file))
+    else:
+        for file in os.listdir(pathx):
+            if file.endswith("_test.tsv"):
+                print("Your available test file is at the following directory: ")
+                print(os.path.join(pathx, file))
 
 def get_data_input_path(print_msg):
     print(print_msg)
-
     is_valid_input = False
-
     while is_valid_input == False:
         user_input = prompt('> Path:')
 
         if not os.path.exists(os.path.dirname(user_input)):
             print('Path doesn\'t exist, please type in new path')
+            show_path_msg(print_msg)
         else:
             return user_input
 
@@ -520,7 +549,7 @@ def start_cli():
         k = select_integer_value(K_FOR_HITS_AT_K_PRINT_MSG, K_FOR_HITS_AT_K_PROMPT_MSG, K_FOR_HITS_AT_K_ERROR_MSG)
         config[K_FOR_HITS_AT_K] = k
     print('----------------------------')
-
+    print(show_available_data_folder())
     config[TRAINING_SET_PATH] = get_data_input_path(print_msg=TRAINING_SET_PRINT_MSG)
 
     use_validation_set = is_validation_set_provided()
