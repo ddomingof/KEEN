@@ -160,6 +160,7 @@ TRANS_E = 'TransE'
 TRANS_H = 'TransH'
 TRANS_D = 'TransD'
 TRANS_R = 'TransR'
+RESCAL = 'RESCAL'
 
 CONV_E_HEIGHT = 'ConvE_height'
 CONV_E_WIDTH = 'ConvE_width'
